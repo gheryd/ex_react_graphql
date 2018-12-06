@@ -1,0 +1,6 @@
+{
+    "jwtPrivatKey" : "mysecretkey",
+    "db": {
+        "port": "3001"
+    }
+}
