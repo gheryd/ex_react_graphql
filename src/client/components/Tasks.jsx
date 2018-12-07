@@ -41,7 +41,6 @@ query {
     tasks {
       id
       content
-      userId
     }
 }
 `
