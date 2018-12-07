@@ -8,8 +8,7 @@ const TaskType = new GraphQLObjectType({
     name: 'TaskType',
     fields: {
         id: {type: GraphQLID},
-        content: {type: GraphQLString},
-        userId: {type: GraphQLID}
+        content: {type: GraphQLString}
     }
 });
 
