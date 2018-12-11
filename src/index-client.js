@@ -12,7 +12,7 @@ import {
     queryOrMutationLink,
     subscriptionLink,
     requestLink,
-} from './links';
+} from './server/links';
 
 const links = [
     errorLink,

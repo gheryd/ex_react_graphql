@@ -7,7 +7,9 @@
         "httpOnly": true,
         "path": "/"
       },
-      "passport": {},
+      "passport": {
+        "user": 1
+      },
       "id": "180luZGUi2M1_4ZPr2CnLALVvz_xvaBy"
     }
   ],
