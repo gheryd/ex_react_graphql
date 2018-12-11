@@ -1,7 +1,7 @@
 const express = require('express');
+const expressGraphQL = require('express-graphql');
 const config = require('config');
 import path from 'path';
-const expressGraphQL = require('express-graphql');
 const schema = require("./server/schema/schema");
 import { StaticRouter } from "react-router-dom";
 import ReactDOM from 'react-dom/server';
@@ -13,6 +13,7 @@ import ApolloClient from "apollo-client";
 import fetch from 'node-fetch';
 import { InMemoryCache } from "apollo-cache-inmemory";
 import { ApolloLink } from 'apollo-link';
+
 
 import {
     errorLink,
@@ -32,17 +33,11 @@ const fileAssets = express.static(
     path.join(__dirname, '../dist/assets')
 );
 
-if (!config.get("jwtPrivatKey")) {
-    console.error("jwtPrivatKey is not setted");
-    process.exit(1);
-}
-
 const app = express();
-app.use((req, res, next) => {
-    console.log("req "+req.method+"  " + req.url);
-    next();
-});
+
 app.use(fileAssets);
+
+require("./server/startup/passport")(app);
 
 app.use('/graphql', expressGraphQL({
     graphiql: true,
