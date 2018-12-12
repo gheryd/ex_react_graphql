@@ -6,7 +6,7 @@ install dependencies:
 - npm install -g json-server
 
 start project: 
-- json-server db.json -p 3001
+- json-server -w db.json -p 3001
 - npm start
 
 browser links: 
