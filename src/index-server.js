@@ -10,6 +10,17 @@ const fileAssets = express.static(
 
 const app = express();
 
+app.use((req, res, next) => {
+    console.log("------> req "+req.method+"  " + req.url,
+        "cookies:",req.cookies,
+        "body:", req.body,
+        'originalUrl:', req.originalUrl,
+        'params:', req.params,
+        "query:", req.query
+    );
+    next();
+});
+
 app.use(fileAssets);
 
 require("./server/startup/passport")(app);

@@ -1,53 +1,13 @@
 {
-  "sessions": [
-    {
-      "cookie": {
-        "originalMaxAge": null,
-        "expires": null,
-        "httpOnly": true,
-        "path": "/"
-      },
-      "passport": {
-        "user": 1
-      },
-      "id": "180luZGUi2M1_4ZPr2CnLALVvz_xvaBy"
-    }
-  ],
   "tasks": [
-    {
-      "content": "task numero 1",
-      "id": 1
-    },
-    {
-      "content": "task numero 2",
-      "id": 2
-    }
+
   ],
   "users": [
     {
       "nickname": "gerry",
       "password": "password",
       "id": 1
-    },
-    {
-      "nickname": "gerry1",
-      "password": "password",
-      "id": 1
-    },
-    {
-      "nickname": "gerry2",
-      "password": "password",
-      "id": 2
-    },
-    {
-      "nickname": "gerry3",
-      "password": "password",
-      "id": 3
-    },
-    {
-      "nickname": "gerry4",
-      "password": "password",
-      "id": 4
     }
-  ]
+  ],
+  "sessions": []
 }

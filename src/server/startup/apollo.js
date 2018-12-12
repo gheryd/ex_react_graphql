@@ -1,9 +1,3 @@
-import {
-    errorLink,
-    subscriptionLink,
-    requestLink,
-    queryOrMutationLink,
-} from '../links';
 import { StaticRouter } from "react-router-dom";
 import ReactDOM from 'react-dom/server';
 import App from "../../client/components/App";
@@ -13,25 +7,20 @@ import { ApolloProvider, renderToStringWithData } from "react-apollo";
 import ApolloClient from "apollo-client";
 import fetch from 'node-fetch';
 import { InMemoryCache } from "apollo-cache-inmemory";
-import { ApolloLink } from 'apollo-link';
+import { HttpLink } from 'apollo-link-http';
 
 module.exports = (app) => {
-
     
-    const links = [
-        errorLink,
-        queryOrMutationLink({
-            fetch,
-            uri: `http://localhost:3000/graphql`,
-        }),
-    ];
     app.use("/", (req, res) => {
+
         const client = new ApolloClient({
-            ssrMode: true,
-            link: ApolloLink.from(links),
-            cache: new InMemoryCache(),
+            link: new HttpLink({
+                uri: 'http://localhost:3000/graphql', 
+                fetch,
+                'credentials': 'same-origin'
+            }),
+            cache: new InMemoryCache()
         });
-    
         const component =
             <ApolloProvider client={client}>
                 <StaticRouter location={req.url} context={{}}>
@@ -50,7 +39,7 @@ module.exports = (app) => {
                 console.error('RENDERING ERROR:', e); // eslint-disable-line no-console
                 res.status(500);
                 res.end(
-                    `An error occurred. Please submit an issue to [https://github.com/apollographql/GitHunt-React] with the following stack trace:\n\n${
+                    `An error occurred. \n\n${
                     e.stack
                     }`
                 );

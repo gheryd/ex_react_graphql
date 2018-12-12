@@ -1,29 +1,34 @@
-const config = require("config");
-const axios = require("axios");
+const {createAxiosInstance} = require("../utils/model_utils");
+const axios = createAxiosInstance();
 
 class Task {
-    getAll(){
-        return axios.get(`http://localhost:3001/tasks`).then((res)=>{
+    getAllByUser(userId){
+        return axios.get(`/tasks`, {
+            params: {userId}
+        }).then((res)=>{
             return res.data
         })
     }
 
-    async get(id){
-        return axios.get(`http://localhost:3001/tasks/${id}`).then((res)=>{
+    async get(id, userId){
+        return axios.get(`/tasks/${id}`, {
+            params: {userId}
+        }).then((res)=>{
             return res.data
         })
     }
-    async add(content){
-        return axios.post(`http://localhost:3001/tasks`, {content}).then((res)=>{
+    async add(content, userId){
+        return axios.post(`/tasks`, 
+            {content, userId}
+        ).then((res)=>{
             return res.data
         })
     }
 
-    async update(task){
-        //TODO
-    }
-    async remove(id){
-        return axios.delete(`http://localhost:3001/tasks/${id}`, {id}).then((res)=>{
+    async remove(id, userId){
+        return axios.delete(`/tasks/${id}`, {
+            params: {userId}
+        }).then((res)=>{
             return res.data
         })
     }

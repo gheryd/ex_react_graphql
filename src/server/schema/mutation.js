@@ -15,7 +15,12 @@ const mutation = new GraphQLObjectType({
                 content: {type: GraphQLString}
             },
             resolve(parentValue, {content}, req){
-                return task.add(content)
+                console.log("[mutation.addTask] content:", content);
+                if(!req.user || !req.user.id){
+                    console.log("[mutation.addTask] user not found in request");
+                    return null;
+                }
+                return task.add(content, req.user.id)
             }
         },
         deleteTask: {
@@ -24,7 +29,12 @@ const mutation = new GraphQLObjectType({
                 id: {type: GraphQLID}
             },
             resolve(parentValue, {id}, req){
-                return task.remove(id);
+                console.log("[mutation.deleteTask] id:", id);
+                if(!req.user || !req.user.id){
+                    console.log("[mutation.deleteTask] user not found in request");
+                    return null;
+                }
+                return task.remove(id, req.user.id);
             }
         },
         signup: {
@@ -34,7 +44,7 @@ const mutation = new GraphQLObjectType({
                 password: {type: GraphQLString}
             },
             resolve(parentValue, {nickname, password}, req){
-                console.log(nickname, password);
+                console.log("[mutation.signup] credentials: ", nickname, password);
                 return auth.signup(nickname, password, req)
             }
         },
@@ -46,9 +56,7 @@ const mutation = new GraphQLObjectType({
             },
             async resolve(parentValue, {nickname, password}, req ){
                 const user =  await auth.login(nickname, password, req);
-                console.log("mutation login user: ",user);
-                //const userLogged =  {nickname: user.nickname};
-                //console.log("user logged: ",userLogged);
+                console.log("[mutation.login] loggedIn user: ",user);
                 return user;
             }
         },
@@ -56,8 +64,10 @@ const mutation = new GraphQLObjectType({
             type: UserType,
             async resolve(parentValue, args, req){
                 const {user} = req;
-                console.log("logout:", user)
-                req.logout();
+                console.log("[mutation.logout] logout for user:", user)
+                await req.logout();
+                req.session.destroy();
+                req.session = null;
                 return user;
             }
         }

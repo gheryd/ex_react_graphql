@@ -7,13 +7,19 @@ const auth = new Auth();
 module.exports = (app) => {
     
     passport.serializeUser((user, done)=>{
-        console.log("serialize user:", user);
+        console.log("[passport.serializeUser] user:", user);
         done(null, user.id);
     })
 
     passport.deserializeUser((id, done)=>{
-        console.log( "deserialize user id:",id );
-        auth.get(id).then(user=>done(null,user));
+        console.log( "[passport.deserializeUser] get user for id:",id );
+        auth.get(id).then(user=>{
+            console.log("[passport.deserializeUser] user:", user);
+            done(null,user)
+        }).catch(err=>{
+            console.log("[passport.deserializeUser] error:", err);
+            return done(err);
+        });
     });
 
     passport.use(new LocalStrategy(
@@ -32,13 +38,10 @@ module.exports = (app) => {
         }
     ));
 
-    app.use((req, res, next) => {
-        console.log("req "+req.method+"  " + req.url);
-        next();
-    });
+    
     app.use(expressSession({
         resave: true,
-        saveUninitialized: true,
+        saveUninitialized: false,
         secret: '23571113',
         store: new AuthStore()
     }));

@@ -1,9 +1,9 @@
 import React, {Component} from "react";
 import {graphql} from 'react-apollo';
-import gql from 'graphql-tag';
 import {NavLink} from "react-router-dom";
 import TaskItem from "./TaskItem";
-
+import mutation from "../mutation/deleteTask";
+import query from "../query/tasks";
 
 class Tasks extends Component{
 
@@ -20,12 +20,13 @@ class Tasks extends Component{
         }
         if (data.error) 
             return <div>Error! {data.error.message}</div>;
+        const tasks = data.tasks || [];
         return (
             <div className="panel panel-default">
                 <div className="panel-body">
                  <NavLink to="/tasks/new">add</NavLink>
                     <ul className="list-group">
-                        {data.tasks.map((task, i) =>
+                        {tasks.map((task, i) =>
                             <TaskItem key="i" task={task} onDelete={this.deleteTask}></TaskItem>
                         )}
                     </ul>
@@ -34,24 +35,6 @@ class Tasks extends Component{
         );
     }
 }
-
-
-const query = gql`
-query {
-    tasks {
-      id
-      content
-    }
-}
-`
-const mutation = gql`
-mutation DeleteTask ($id:ID)
-{
-    deleteTask(id:$id){
-      id
-    }
-}
-`
 
 export default graphql(query, (props)=> {
     return {

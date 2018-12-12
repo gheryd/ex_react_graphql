@@ -3,31 +3,22 @@ import {hydrate} from 'react-dom';
 import {BrowserRouter} from "react-router-dom";
 import App from "./client/components/App"
 import {ApolloProvider} from "react-apollo";
-import ApolloClient, { createNetworkInterface } from "apollo-client";
-import { ApolloLink } from 'apollo-link';
+import ApolloClient from "apollo-client";
 import { InMemoryCache } from 'apollo-cache-inmemory';
+import {createHttpLink} from 'apollo-link-http';
 
-import {
-    errorLink,
-    queryOrMutationLink,
-    subscriptionLink,
-    requestLink,
-} from './server/links';
-
-const links = [
-    errorLink,
-    requestLink({
-        queryOrMutationLink: queryOrMutationLink(),
-        subscriptionLink: subscriptionLink(),
-    }),
-];
+const link = createHttpLink({
+    uri: '/graphql',
+    'credentials': 'same-origin'
+});
 
 const apolloClient = new ApolloClient({
     dataIdFromObject: o => o.id,
     ssrForceFetchDelay: 100,
-    link: ApolloLink.from(links),
+    link,
     connectToDevTools: true,
     cache: new InMemoryCache().restore(window.__APOLLO_STATE__),
+    
     defaultOptions: {
 		query: {
 			fetchPolicy: 'no-cache',
@@ -36,6 +27,7 @@ const apolloClient = new ApolloClient({
 			fetchPolicy: 'no-cache',
         },
     }
+    
 });
 
 hydrate(

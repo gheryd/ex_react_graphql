@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { graphql } from 'react-apollo';
-import gql from 'graphql-tag';
 import {NavLink} from "react-router-dom";
+import mutation from "../mutation/createTask";
 
 class CreateTask extends Component {
     constructor(props) {
@@ -22,7 +22,6 @@ class CreateTask extends Component {
             this.props.history.push(`/`)
         });
     }
-
 
     render() {
         return (
@@ -48,14 +47,5 @@ class CreateTask extends Component {
     }
 
 }
-
-const mutation = gql`
-mutation CreateTask ($content:String)
-{
-    addTask(content:$content){
-      id
-    }
-}
-`
 
 export default graphql(mutation)(CreateTask);

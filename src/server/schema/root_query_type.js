@@ -13,19 +13,16 @@ const RootQueryType = new GraphQLObjectType({
         tasks: {
             type: new GraphQLList(TaskType),
             resolve(parentValue, args, req){
-                return task.getAll();
-            }
-        },
-        users: {
-            type: new GraphQLList(UserType),
-            resolve(parentValue, args, req){
-                return auth.getAll()
+                if(!req.user || !req.user.id){
+                    return null;
+                }
+                return task.getAllByUser(req.user.id);
             }
         },
         user: {
             type: UserType,
-            resolve(parentValue, args,req){
-                console.log("query user resove", req.user);
+            resolve(parentValue, args, req){
+                console.log("[RootQuerytype(user)] req.user:", req.user);
                 return req.user;
             }
         }
