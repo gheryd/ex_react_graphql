@@ -1,4 +1,7 @@
-# ex_react_graphql (apollo, express-session, passport, react, json-server)
+# ex_react_graphql 
+
+libraries: apollo-graphql, express, express-session, passport, react, json-server, grapgql
+
 require: nodejs, npm
 
 install dependencies:
